@@ -1,0 +1,33 @@
+name: Deploy Plugin to Hostinger
+
+on:
+  push:
+    branches:
+      - main # Cambia a 'master' si esa es tu rama principal
+
+jobs:
+  deploy:
+    name: Despliegue vía FTP
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Obtener el código
+        uses: actions/checkout@v4
+
+      - name: 📂 Sincronizar archivos al servidor
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Asegúrate de que esta ruta termine con una barra (/)
+          server-dir: /public_html/wp-content/plugins/nombre-de-tu-plugin/
+          
+          # Archivos y carpetas a ignorar (opcional pero recomendado)
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            node_modules/**
+            composer.json
+            composer.lock
+            README.md
