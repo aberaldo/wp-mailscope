@@ -16,36 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-/**
- * Register in WordPress menu
- */
-function mailscope_register_main_menu() {
-    add_menu_page(
-        'MailScope',
-        'MailScope',
-        'manage_options',
-        'mailscope-dashboard',
-        'mailscope_render_admin_page',
-        'dashicons-email',
-        25
-    );
-}
-add_action( 'admin_menu', 'mailscope_register_main_menu' );
+// Definir constante con la ruta base del plugin para inclusiones seguras
+define( 'AL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-/**
- * Admin page
- */
-function mailscope_render_admin_page() {
-    // Security permissions
-    if ( ! current_user_can( 'manage_options' ) ) {
-        return;
-    }
-    ?>
-    <div class="wrap">
-        <h1>MailScope</h1>
-        <div class="notice notice-info">
-            <p>Hello World</p>
-        </div>
-    </div>
-    <?php
+// Cargar la interfaz de administración solo si estamos en el backend de WP
+if ( is_admin() ) {
+    require_once AL_PLUGIN_DIR . 'includes/admin-page.php';
 }
